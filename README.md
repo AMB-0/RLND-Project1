@@ -4,7 +4,7 @@ The current README.md file summarizes the project, environment, goals and how to
 
 <br/>
 
-A summary of the implementation / solution of the current project can be found in the Report.md file.
+A summary of the implementation / solution of the current project can be found in the <a href="../docs/Report.md">Report.md</a> file.
 
 <br/>
 
@@ -73,12 +73,11 @@ Now, given this information, the agent has to learn, and of course choose the be
 2. turn left
 3. turn right
 
-In the following section we'll see potential solutions for this task.
-
-<br/>
-<br/>
+<br/><br/>
 
 # Getting-Started
+
+The content of the project within this repository is organized as follows:
 
 ```
 PROJECT 1
@@ -97,3 +96,24 @@ PROJECT 1
         model.py
         Navigation.ipynb
 ```
+
+The project was built using python 3.6, pytorch and some other libraries included within the requirements.txt file. <br/>
+
+For running the project the followings steps are required:
+
+1. Create an environment with python 3.6. For this, the following steps are recommended<br/>
+        1.1.  install miniconda (link: https://docs.conda.io/en/latest/miniconda.html)<br/>
+        1.2.  run the following on the command prompt:<br/>
+        conda install python=3.6<br/>
+        conda create -n rlnd-env python=3.6
+2. Clone the project / Download the files within the project
+3. Install the required python libraries by running the following on the command prompt:<br/>
+        python -m pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
+4. Download unity agent file following one of the following links depending on the operating system:<br/>
+        - Linux: <a href=https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Linux.zip>click here</a><br/>
+        - Mac OSX: <a href=https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana.app.zip>click here</a><br/>
+        - Windows (32-bit): <a href=https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Windows_x86.zip>click here</a><br/>
+        - Windows (64-bit): <a href=https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Windows_x86_64.zip>click here</a><br/>
+Then, place the file in the same folder as the project folder and unzip (or decompress) the file.
+5. Open the "navigation.ipynb" file and follow the instructions for modifying the "file_name" parameter based on the unity agent file downloaded in step 4
+6. Run the code in the "navigation.ipynb" file

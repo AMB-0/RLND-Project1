@@ -69,9 +69,9 @@ class Agent():
 
         # Epsilon-greedy action selection
         if random.random() > eps:
-            return np.argmax(action_values.cpu().data.numpy())
+            return np.argmax(action_values.cpu().data.numpy()).astype(int)
         else:
-            return random.choice(np.arange(self.action_size))
+            return random.choice(np.arange(self.action_size)).astype(int)
 
     def learn(self, experiences, gamma):
         """Update value parameters using given batch of experience tuples.

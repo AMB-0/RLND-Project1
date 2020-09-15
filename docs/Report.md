@@ -1,6 +1,6 @@
 # Project 1 - Banana collector agent
 
-The current Report.md file summarizes the implementation, algorithm used and the results obtained in the Project 1 of the Udacity's Deep Reinforcement Learning Nanodegree. For a brief description of the project, environment and how to get started, please check the README.md file.  This document is structured as follows:
+The current Report.md file summarizes the implementation, algorithm used and the results obtained in the Project 1 of the Udacity's Deep Reinforcement Learning Nanodegree. For a brief description of the project, environment and how to get started, please check the <a href="../README.md">README.md</a> file.  This document is structured as follows:
 
 <br/>
 
@@ -11,23 +11,20 @@ The current Report.md file summarizes the implementation, algorithm used and the
     2. [How it works](#How-it-works)
 3. [Implementation & results](#Implementation-&-Results)
     1. [Code Structure](#Code-Structure)
-    2. [Results](#Results)
+    2. [Neural Network Architecture](#Neural-Network-Architecture)
+    3. [Hyperparameters](#Hyperparameters)
+    4. [Results](#Results)
 4. [Future work](#Future-Work)
 
 <br/><br/>
 
 # Framing-the-problem
 
-As described in the README.md file, the goal of this project is to train an agent to navigate a large square virtual world while collecting bananas. The caveat here is that yellow bananas deliver a positive reward of +1 while the blue bananas returns a negative reward of -1. Hence the idea is that the agent navigates picking up as much yellow bananas as possible while avoiding the blue ones. The agent can achieve this by choosing the right action - move either left, right, forward or back - at each timestep. However, part of the goal is that the agent can learn how to accomplish this goal without explicit instructions but through reinforcement learning.
-
-
+As described in the <a href="../README.md">README.md</a> file, the goal of this project is to train an agent to navigate a large square virtual world while collecting bananas. The caveat here is that yellow bananas deliver a positive reward of +1 while the blue bananas returns a negative reward of -1. Hence the idea is that the agent navigates while picking up as much yellow bananas as possible while avoiding the blue ones. The agent can achieve this by choosing the right action - move either left, right, forward or back - at each timestep. However, part of the goal is that the agent can learn how to accomplish this goal without explicit instructions but through reinforcement learning.
 <br/><br/>
-
 We can think of this problem as each timestep being a sort of snapshot of the environment in which the agent takes an action and receives a reward being either 0, +1 or -1. Following this idea, we can then frame this situation as a Markov Decision Processes as shown in the following diagram:
 
 ![figure1]
-
-[figure1]: https://video.udacity-data.com/topher/2017/September/59c29f47_screen-shot-2017-09-20-at-12.02.06-pm/screen-shot-2017-09-20-at-12.02.06-pm.png "MDP diagram"
 
 - The state is given by the position of the agent, it's velocity and the relative position of the objects in the virtual world
 - The actions are essentially four, move left, right, forward or back
@@ -35,24 +32,21 @@ We can think of this problem as each timestep being a sort of snapshot of the en
 
 <br/>
 
-The key idea behind how we can solve this type of problems is the "experience". Essentially we can train the agent to understand how to navigate the virtual world just by learning of its interactions with it without any previous knowledge. We can start with an agent that chooses random actions at each state and by keeping track of the outcomes / rewards obtained by each one of these actions, the agent can then "learn" which actions to take in the future in order to maximize its expected reward. 
+The key idea behind how we can solve this type of problems is the "experience". Essentially we can train the agent to understand how to navigate the virtual world just by learning of its own interactions with the environment without any previous knowledge. Hence, we can start with an agent that chooses random actions at each state and, by keeping track of the outcomes / rewards obtained by each action, the agent can then "learn" which action to take in the future to maximize its reward. 
 
 <br/>
 
-Now, for problems where the number of states / actions is finite, we can keep track of the rewards for each action-state pair in a table, usually called Q or action-value function table and then pick the action with the maximum reward for each state. However, in problems like the one described before, where the number of states / actions is infinite, the number of entries in the Q-table would be infinite as well which makes this solution not feasible. 
+We can keep track of the rewards for each action-state pair in a table, usually called Q-table or action-value function table and then pick the action with the maximum value for each state. This works fine as long as the number of states / actions is finite. However, in problems like the one described before, where the number of states / actions is infinite, the number of entries in the Q-table would be infinite as well which makes this solution not feasible. 
 
 <br/>
 
-One way of approaching problems with either continuos state space or action space is to use neural networks as a "black box" for estimating this action-value function. In short, we can use a neural network with one input for each state space dimension and with one output for each action space dimension and adjust its weights to estimate the action-value function. We can then choose the action with the maximum output as the best action for each given state. In the next section, we will try describe and implement one algorithm called Deep Q-Learning or DQN that follows this idea to solve this challenge. In the future work section we'll also mention another algorithms that might fit this purpose.
+One way of approaching problems with either continuos state space or action space is to use neural networks as a "black box" for estimating this action-value function. In short, we can use a neural network as a replacement for the Q-table and adjust its weights to estimate the action-value function. We can then choose the action with the maximum output as the best action for each given state. In the next section, we will describe and implement one algorithm called Deep Q-Learning or DQN that follows this idea to solve this challenge. 
 
 <br/><br/>
 
 # Deep-Q-Learning
 
-The Deep-Q learning algorithm, introduced by XXXX in its article called [Human-level control through deep reinforcement learning], draws on the following key ideas for solving MDP problems like the one in this project:
-
-
-https://daiwk.github.io/assets/dqn.pdf
+The Deep-Q learning algorithm, introduced by Mnih. et al in the article called <a href=https://daiwk.github.io/assets/dqn.pdf>Human-level control through deep reinforcement learning</a>, draws on the following key ideas for solving MDP problems like the one in this project:
 
 ## Key-Ideas
 
@@ -73,16 +67,12 @@ A second key element on reinforcement learning algorithms is how to choose the a
 3. <u>Detached learning from training</u><br/>
 Another important setting from DQN algorithm is the use of two neural networks instead of just one. This helps detach the learning step from the training step. The issue that we want to avoid here is to update the weights of the neural network - with the learning experiences drawn from the environment - and then used this same neural network for estimating the target for the next sample. This would cause the loss to be very noisy, hence impacting the algorithm stability. An analogy for this could be to try to aim for a moving target. By having two different neural networks, we can use one from learning and another one from estimating the target "y_i" which effectively detached the learning from the training step.
 
-4. <u>Soft update (Tau)</u><br/>
+4. <u>Soft update</u><br/>
 One final addition to DQN is to include a "Tau" parameter for controlling how the weights from the Q_target network are updated using the Q_local network. This "Tau" parameter take values between 0 and 1 and work as follows:
     - A Tau value of 1 means that we overwrite all weights of Q_target with the Q_local weights
     - A Tau value of 0 means that we don't update the weights of Q_target at all
     - A Tau value of 0.3 means that we update the weights of Q_target by considering a 30% of the value of Q_local and a 70% of the value of Q_target
- 
-<br/>
-In the next section we will check how all those elements blend together in order to make  DQN work in practice.
 <br/><br/>
-
 ## How-It-Works
 
 In a nutshell, the DQN algorithm works by first initializing the values / parameters and then applying a 2-phase process - a sampling and a learning phase - as follows:
@@ -135,38 +125,53 @@ PROJECT 1
 
 Description of files:
 
-1. <u>Model.py</u>:<br>
-    File that contains the implementation of the neural network. The architecture of this NN includes 3 fully connected layers with the following characteristics:<br>
-        - FC layer 1: <i>Layer with 64 nodes fully connected with FC layer 2. This layer receives "N" inputs where "N" corresponds to the number of dimensions in the state space (37 in this case). The activation function for this layer is a rectifier layer unit (ReLU)</i><br>
-        - FC layer 2: <i>Layer that also has 64 units that fully connected with FC layer 3. The activation function is also a ReLU</i><br>
-        - FC layer 3: <i>Layer that receives 64 inputs coming from FC layer 2 and outputs "M" values, one for each action.</i><br>
-
-![figure4]
-
-[figure4]: ../img/NN_diagram.png "Neuronal Network Diagram"
-
-<br>
-2. <u>Agent.py</u>:<br>
-    File that contains the implementation of the agent and its respective replay buffer.   and the "class. 
+1. <u><a href=../src/model.py>Model.py</a></u>:<br>
+    File that contains the implementation of the neural network. A description of this architecture can be found in the following section.
+    <br><br>
+2. <u><a href=../src/Agent.py>Agent.py</a></u>:<br>
+    File that contains the implementation of the agent class and the respective replay buffer class
 <br><br>
-3. <u>Navigation.ipynb</u>:<br>
-    Jupyter notebook including all the necessary steps for training the agent from scratch. Even though the task is considered with a average reward of 13 over the last 100 episodes, the code stops if an average reward over 15 is achieved. 
-<br>
+3. <u><a href=../src/Navigation.ipynb>Navigation.ipynb</a></u>:<br>
+    Jupyter notebook including all the necessary steps for training the agent from scratch. Even though the task is considered with a average reward of 13 over the last 100 episodes, the code stops if an average reward over 15 is achieved
+<br><br>
 
+## Neural-Network-Architecture
+<br>
+The architecture used for the Q-table neural network is quite simple. It receives the current state of the environment as the input and it returns the action-value function of the agent. The architecture includes 3 fully connected layers with the following characteristics:<br>
+        - <u>FC layer 1</u>: Layer with 64 nodes fully connected with FC layer 2. This layer receives "N" inputs where "N" corresponds to the number of dimensions in the state space (37 in this case). The activation function for this layer is a rectifier layer unit (ReLU)<br>
+        - <u>FC layer 2</u>: Layer that also has 64 units that fully connected with FC layer 3. The activation function is also a ReLU<br>
+        - <u>FC layer 3</u>: Layer that receives 64 inputs coming from FC layer 2 and outputs "M" values, one for each action<br>
+
+![figure2]
+<br><br>
+
+## Hyperparameters
+The value for each hyperparameters used as part of the implementation is included within the <a href=../src/Agent.py>Agent.py</a> code
+<br><br>
 
 ## Results
 
-![figure2]
+The results obtained are summarized as follows:
 
-[figure2]: ../img/Results.png "DQN Results"
+![figure3]
 
-
-Hyperparameters
-
-<br/><br/>
+By looking at the plot above, we can see that the agent started with a reward of 0 and while it was exploring the different state/action pair it was improving it's reward. After a couple of hundred episodes, the agent's learning curve started to increase until it finally reached an average reward of 15 after 532 episodes. <br><br>
+The weights obtained as part of the training are included in the <a href="../src/checkpoint.pth">checkpoint.pth</a> file.
+<br><br>
 
 # Future-Work
 
-- Double DQN
-- Dueling Networks Architecture
-- Prioritized Replay Memory
+A couple of ideas to try in the future:
+
+- Add some variations to the DQN algorithm:
+    - Double DQN
+    - Use a prioritized Replay Memory, adding more weight to some learning experiences
+    - Dueling Networks Architecture
+
+- Try some policy-based methods algorithms
+- Try adding more complexity to the neural network architecture  
+
+
+[figure1]: https://video.udacity-data.com/topher/2017/September/59c29f47_screen-shot-2017-09-20-at-12.02.06-pm/screen-shot-2017-09-20-at-12.02.06-pm.png "MDP diagram"
+[figure2]: ../img/NN_diagram.png "Neuronal Network Diagram"
+[figure3]: ../img/Results.png "DQN Results"
