@@ -51,19 +51,18 @@ The Deep-Q learning algorithm, introduced by Mnih. et al in the article called <
 ## Key-Ideas
 
 1. <u>Online sampling / Offline training with replay buffer</u><br/>
+
 Reinforcement learning algorithms like Sarsa or Q-learning use online training. This means that each time the agent interacts with the environment, by choosing an action, the agent will learn from that outcome and then discard the information. This is not optimal since some states are less likely to be experienced and we might want to learn from them several times. In addition, there's a clear correlation in how states are presented to the agent since some states might only appear after several decisions were made. By learning following this same sequence, we are introducing a bias into our agents' learning pattern.<br/>
 DQN solves this issue by using online sampling and offline training. This means that, instead of learning while we interact with the environment, the agent saves its experiences in a replay buffer. The agent then draws random samples mini-batches from this buffer in an "offline" setting and learn from them later on.
 <br/>
 <br/>
 2. <u>Exploration v/s Explotation (e-greedy policy)</u><br/>
-A second key element on reinforcement learning algorithms is how to choose the action in each time step. In the case of DQN algorithm, the agents' action is selected by following an e-greedy policy. This means it depends on a parameter "epsilon" that goes between 0 and 1 as follows:
-    - With probability "1-epsilon" --> We select the action that has maximum the value in the Q-table / action-value function for the given state
-    - With probability "epsilon" --> We select a random action from the possible action space
+A second key element on reinforcement learning algorithms is how to choose the action in each time step. In the case of DQN algorithm, the agents' action is selected by following an e-greedy policy. This means it depends on a parameter "epsilon" that goes between 0 and 1 as follows:<br/><br/>
+    - With probability "1-epsilon" --> We select the action that has maximum the value in the Q-table / action-value function for the given state<br/>
+    - With probability "epsilon" --> We select a random action from the possible action space<br/>
 <br/>
-
-    The "e-greedy" policy described, ensures that the agent explote the best action while keeping exploration of the rewards for some other actions, hence, avoiding getting stuck into a suboptimal policy.
-<br/>
-<br/>
+The "e-greedy" policy described, ensures that the agent explote the best action while keeping exploration of the rewards for some other actions, hence, avoiding getting stuck into a suboptimal policy.
+<br/><br/>
 3. <u>Detached learning from training</u><br/>
 Another important setting from DQN algorithm is the use of two neural networks instead of just one. This helps detach the learning step from the training step. The issue that we want to avoid here is to update the weights of the neural network - with the learning experiences drawn from the environment - and then used this same neural network for estimating the target for the next sample. This would cause the loss to be very noisy, hence impacting the algorithm stability. An analogy for this could be to try to aim for a moving target. By having two different neural networks, we can use one from learning and another one from estimating the target "y_i" which effectively detached the learning from the training step.
 
