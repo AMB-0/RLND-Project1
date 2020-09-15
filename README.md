@@ -57,6 +57,7 @@ The last entry consist of the percent of the ray length at which the object was 
 <br/>
 
 ![alt text][figure2]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Figure 1: Agent's world diagram [1]
 
 [figure2]: https://wpumacay.github.io/research_blog/imgs/img_banana_env_observations.png "Agent environment"
 
@@ -117,3 +118,7 @@ For running the project the followings steps are required:
 Then, place the file in the same folder as the project folder and unzip (or decompress) the file.
 5. Open the "navigation.ipynb" file and follow the instructions for modifying the "file_name" parameter based on the unity agent file downloaded in step 4
 6. Run the code in the "navigation.ipynb" file
+
+
+## Reference
+[1] https://wpumacay.github.io/research_blog/posts/deeprlnd-project1-part1/
